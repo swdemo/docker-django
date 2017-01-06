@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  db:
+    build: db/.
+    volumes:
+      - db:/var/lib/mysql/
+  app:
+    build: app/.
+    ports:
+      - "127.0.0.1:8008:80"
+    depends_on:
+      - db
+volumes:
+  db:
+    driver: local
+

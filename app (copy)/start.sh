@@ -31,9 +31,9 @@ if [ ! -f /home/django/password.txt ] ; then
     /usr/bin/mysqld_safe & sleep 5s
 
     # Set password
-    MYSQL_ROOT_PASSWORD=`pwgen -c -n -1 12`
-    MYSQL_DJANGO_PASSWORD=`pwgen -c -n -1 12`
-    DJANGO_ADMIN_PASSWORD=`pwgen -c -n -1 12`
+    MYSQL_ROOT_PASSWORD=pwd
+    MYSQL_DJANGO_PASSWORD=pwd
+    DJANGO_ADMIN_PASSWORD=pwd
 
     # Output password
     echo -e "MYSQL_ROOT_PASSWORD = $MYSQL_ROOT_PASSWORD\nMYSQL_DJANGO_PASSWORD = $MYSQL_DJANGO_PASSWORD\nDJANGO_ADMIN_PASSWORD = $DJANGO_ADMIN_PASSWORD" > /home/django/password.txt
