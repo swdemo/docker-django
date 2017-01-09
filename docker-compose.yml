@@ -7,11 +7,10 @@ services:
       - db:/var/lib/mysql/
   app:
     build: app/.
+  web:
+    build: web/.
     ports:
-      - "127.0.0.1:8008:80"
-    depends_on:
-      - db
+      - "127.0.0.1:8888:80"
 volumes:
   db:
     driver: local
-

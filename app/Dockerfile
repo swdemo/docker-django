@@ -1,39 +1,37 @@
-From ubuntu:16.04
-
-MAINTAINER Jacob chenjr0719@gmail.com
+FROM ubuntu:16.04
+MAINTAINER Alexiss
 
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y \
-    git \
-    vim \
-    python3 \
-    python3-pip \
-    nginx \
-    supervisor \
-    mysql-client \
-    libmysqld-dev \
-    pwgen && rm -rf /var/lib/apt/lists/*
-
-RUN pip3 install uwsgi django mysqlclient
-
-# nginx config
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-COPY nginx-site.conf /etc/nginx/sites-available/default
-
-# supervisor config
-COPY supervisor.conf /etc/supervisor/conf.d/
+        git \
+        vim \
+        python3 \
+        python3-pip \
+        mysql-client \
+        libmysqld-dev \
+        net-tools \
+        pwgen &&\
+    rm -rf /var/lib/apt/lists/* &&\
+    pip3 install uwsgi django mysqlclient &&\
+    mkdir -p /home/django/website/model_example/ &&\
+    django-admin startapp model_example /home/django/website/model_example/
 
 # uWSGI config
 COPY uwsgi.ini /home/django/
-COPY uwsgi_params /home/django/
 
 # Model_example content
-COPY admin.py /home/django/
-COPY models.py /home/django/
+COPY admin.py /home/django/website/model_example/
+COPY models.py /home/django/website/model_example/
 
-# Copy initialization scripts
-COPY start.sh /home/django/
+RUN mkdir -p /home/django/website     &&\
+    django-admin startproject website /home/django/website
+COPY settings.py /home/django/website/website/
+RUN echo yes | python3 /home/django/website/manage.py collectstatic
+#RUN echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', '$DJANGO_ADMIN_PASSWORD')" | python3 /home/django/website/manage.py shell
 
-EXPOSE 80
-CMD ["/bin/bash", "/home/django/start.sh"]
+ENV SETTING_PATH=/home/django/website/website/settings.py
+
+EXPOSE 8008
+
+CMD ["/usr/local/bin/uwsgi", "--ini", "/home/django/uwsgi.ini"]
