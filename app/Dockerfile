@@ -5,7 +5,7 @@ RUN pip3 install --no-cache-dir uwsgi django mysqlclient &&\
     mkdir -p /home/django/website/model_example/ &&\
     django-admin startapp model_example /home/django/website/model_example/
 
-COPY uwsgi.ini admin.py models.py settings.py /home/django/
+COPY uwsgi.ini admin.py models.py settings.py migrate.sh /home/django/
 
 RUN mv /home/django/admin.py /home/django/website/model_example/ && \
     mv /home/django/models.py /home/django/website/model_example/ && \

@@ -2,7 +2,7 @@ version: '2'
 
 services:
   db:
-    build: db/.
+    image: mysql:5.7
     volumes:
       - db:/var/lib/mysql/
   app:

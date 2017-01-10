@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - db:/var/lib/mysql/
+    environment: 
+      - MYSQL_ROOT_PASSWORD=pwd
+      - MYSQL_DATABASE=django
+      - MYSQL_USER=django
+      - MYSQL_PASSWORD=pwd
+  app:
+    build: app/.
+    command: ["/bin/bash", "/home/django/migrate.sh"]
+volumes:
+  db:
+    driver: local
